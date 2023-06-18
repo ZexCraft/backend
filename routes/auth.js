@@ -37,4 +37,11 @@ router.get('/linkedin/callback', passport.authenticate('linkedin',{
     successRedirect: 'http://localhost:3000/badges',
     failureRedirect: '/login/failed'
 }))
+router.get('/facebook', passport.authenticate('facebook'));
+
+router.get('/facebook/callback', passport.authenticate('facebook',{
+    successRedirect: 'http://localhost:3000/badges',
+    failureRedirect: '/login/failed'
+}))
+
 module.exports = router;
