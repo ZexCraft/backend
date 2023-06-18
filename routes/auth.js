@@ -31,4 +31,10 @@ router.get('/github/callback', passport.authenticate('github',{
     failureRedirect: '/login/failed'
 }))
 
+router.get('/linkedin', passport.authenticate('linkedin', {scope: ['profile']}));
+
+router.get('/linkedin/callback', passport.authenticate('linkedin',{
+    successRedirect: 'http://localhost:3000/badges',
+    failureRedirect: '/login/failed'
+}))
 module.exports = router;
