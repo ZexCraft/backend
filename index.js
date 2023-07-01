@@ -6,6 +6,8 @@ const bodyParser = require('body-parser');
 // const passportSetup = require('./passport');
 const authRoute = require('./routes/auth');
 const app = express();
+const port = process.env.PORT || 5000;
+const http = require('http');
 app.use(cookieSession({
     name: 'session',
     keys: ['zhixin'],
@@ -22,4 +24,5 @@ app.use(cors({
 }))
 app.use('/auth', authRoute)
 app.use(bodyParser.json());
-app.listen(5000, () => console.log('Server running on port 5000'));
+
+server.listen(port);
