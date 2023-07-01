@@ -84,7 +84,6 @@ router.get('/login/success', (req, res) =>{
         message: 'User has successfully authenticated.',
         user: req.user,
         email: req.user.emails[0].value,
-        cookies: req.cookies
     })
 })
 router.get('/login/failed', (req, res) =>{

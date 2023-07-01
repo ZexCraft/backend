@@ -8,7 +8,7 @@ const app = express();
 app.use(cookieSession({
     name: 'session',
     keys: ['zhixin'],
-    maxAge: 24 * 60 * 60 * 1000 // 24 hours
+    maxAge: 120 * 1000 // 2 minutes
 
 }))
 app.use(passport.initialize());
