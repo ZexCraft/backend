@@ -7,6 +7,7 @@ const port = process.env.PORT || 5000;
 // const passportSetup = require('./passport');
 const authRoute = require('./routes/auth');
 const app = express();
+app.use(express.json())
 app.use(cookieSession({
     name: 'session',
     keys: ['zhixin'],

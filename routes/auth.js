@@ -9,8 +9,7 @@ router.post('/store', async (req, res) => {
   try {
     const metadataFilePath = './metadata.json';
 
-    // Write the metadata string to a file
-    fs.writeFileSync(metadataFilePath, metadataString, { encoding: 'utf-8' });
+      fs.writeFileSync(metadataFilePath, metadataString, { encoding: 'utf-8' });
 
     const formData = new FormData();
     formData.append('file', fs.createReadStream(metadataFilePath));
@@ -30,66 +29,6 @@ router.post('/store', async (req, res) => {
     res.status(500).json({ error: 'Internal server error' });
   }
 });
-
-
-
-
-// Function to convert an object to a File object
-// function objectToFile(objectData, fileName) {
-//   return new Promise((resolve, reject) => {
-//     // Create a temporary JSON file using the fs module
-//     const tempFilePath = `./${fileName}.json`;
-//     fs.writeFile(tempFilePath, JSON.stringify(objectData), (err) => {
-//       if (err) {
-//         reject(err);
-//       } else {
-//         // Read the temporary file to create a File object
-//         const file = fs.createReadStream(tempFilePath);
-//         file.on('end', () => {
-//           // Cleanup: Remove the temporary file
-//           fs.unlink(tempFilePath, (err) => {
-//             if (err) {
-//               console.error('Error deleting temporary file:', err);
-//             }
-//           });
-//         });
-//         resolve(file);
-//       }
-//     });
-//   });
-// }
-
-// router.post('/store', async (req, res) => {
-//   const { metadataString} = req.body;
-//   // console.log(req);
-//   // const blob = new Blob([metadataString], { type: "application/json" });
-//   // const file = new File([blob], "metadata.json", { type: "application/json" });
-
-//   objectToFile(metadataString, "metadata.json")
-//   .then(async (file) => {
-//     const formData = new FormData();
-//     formData.append("file", file);
-    
-//     try {
-//       const response = await axios.post('https://api.nft.storage/upload', {
-//         headers: {
-//           'Authorization': `Bearer ${process.env.NFT_STORAGE_KEY}`,
-//           ...formData.getHeaders(),
-//         },
-//         body: formData,
-//       });
-//       console.log(response.data);
-//       res.status(200).json(response.data);
-//     } catch (error) {
-//       console.error(error);
-//       res.status(500).json({ error: 'Internal server error' });
-//     }
-//   })
-//   .catch((error) => {
-//     console.error('Error converting object to file:', error);
-//   });
-//  });
-
 const GoogleStrategy = require('passport-google-oauth20').Strategy;
 const GitHubStrategy = require('passport-github2').Strategy;
 const LinkedInStrategy = require('@sokratis/passport-linkedin-oauth2').Strategy;
@@ -160,8 +99,6 @@ function(accessToken, refreshToken, profile, done) {
     done(null, profile);
 }));
 router.get('/facebook/accesstoken', (req, res) => {
-    // Generate or fetch the value to send to the frontend      
-    // Send the value as part of the response
     res.json({ accessToken: facebookaccesstoken });
   });
 
