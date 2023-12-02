@@ -46,7 +46,7 @@ router.post("/image", async (req, res) => {
 
   try {
     const { data } = await axios.get(imageUrl, { responseType: "arraybuffer" });
-    const imageBuffer = Buffer.from(response.data, "binary");
+    const imageBuffer = Buffer.from(data, "binary");
 
     const tempFilePath = path.join(__dirname, "image.jpg");
     fs.writeFileSync(tempFilePath, imageBuffer);
