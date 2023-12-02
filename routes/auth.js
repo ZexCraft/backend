@@ -45,32 +45,28 @@ router.post("/image", async (req, res) => {
   console.log(image);
 
   try {
-    const response = await axios.get(
+    const { data } = await axios.get(
       "https://cdn.midjourney.com/4d9a6d7e-b0b0-4a73-af8f-7bf40f09d51a/0_0.png"
     );
-    console.log(response.data);
 
     // Create FormData
-    // const formData = new FormData();
-    // formData.append("file", response.data, {
-    //   filename: "image.jpg",
-    // });
+    const formData = new FormData();
+    formData.append("file", data, {
+      filename: "image.jpg",
+    });
 
-    console.log("formData");
+    const response = await axios.post(
+      "https://api.nft.storage/upload",
+      formData,
+      {
+        headers: {
+          Authorization: `Bearer ${process.env.NFT_STORAGE_KEY}`,
+          ...formData.getHeaders(),
+        },
+      }
+    );
 
-    // const response = await axios.post(
-    //   "https://api.nft.storage/upload",
-    //   formData,
-    //   {
-    //     headers: {
-    //       Authorization: `Bearer ${process.env.NFT_STORAGE_KEY}`,
-    //       ...formData.getHeaders(),
-    //     },
-    //   }
-    // );
-
-    // console.log(response.data);
-    res.status(200).json({ response: "response.data " });
+    res.status(200).json(response.data);
   } catch (error) {
     console.error(error);
     res.status(500).json({ error: "Internal server error" });
