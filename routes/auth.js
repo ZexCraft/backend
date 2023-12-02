@@ -45,9 +45,7 @@ router.post("/image", async (req, res) => {
   console.log(image);
 
   try {
-    const { data } = await axios.get(
-      "https://cdn.midjourney.com/4d9a6d7e-b0b0-4a73-af8f-7bf40f09d51a/0_0.png"
-    );
+    const { data } = await axios.get(image);
 
     // Create FormData
     const formData = new FormData();
