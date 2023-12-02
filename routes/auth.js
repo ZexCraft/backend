@@ -36,39 +36,41 @@ router.post("/store", async (req, res) => {
   }
 });
 
+router.post("/hello", async (req, res) => {
+  res.status(200).json({ response: "hello" });
+});
+
 router.post("/image", async (req, res) => {
   const { image } = req.body;
+  console.log(image);
 
   try {
-    const { data: svgContent } = await axios.get(image);
-    const imageFilePath = "./image.png";
-
-    svg2img(svgContent, (error, buffer) => {
-      if (error) {
-        console.error("Error converting SVG to PNG:", error);
-        res.status(500).send("Internal Server Error");
-        return;
-      }
-
-      // Save the PNG file
-      fs.writeFileSync(imageFilePath, buffer);
-    });
-
-    const formData = new FormData();
-    formData.append("file", fs.createReadStream(imageFilePath));
-    const response = await axios.post(
-      "https://api.nft.storage/upload",
-      formData,
-      {
-        headers: {
-          Authorization: `Bearer ${process.env.NFT_STORAGE_KEY}`,
-          ...formData.getHeaders(),
-        },
-      }
+    const response = await axios.get(
+      "https://cdn.midjourney.com/4d9a6d7e-b0b0-4a73-af8f-7bf40f09d51a/0_0.png"
     );
-
     console.log(response.data);
-    res.status(200).json(response.data);
+
+    // Create FormData
+    // const formData = new FormData();
+    // formData.append("file", response.data, {
+    //   filename: "image.jpg",
+    // });
+
+    console.log("formData");
+
+    // const response = await axios.post(
+    //   "https://api.nft.storage/upload",
+    //   formData,
+    //   {
+    //     headers: {
+    //       Authorization: `Bearer ${process.env.NFT_STORAGE_KEY}`,
+    //       ...formData.getHeaders(),
+    //     },
+    //   }
+    // );
+
+    // console.log(response.data);
+    res.status(200).json({ response: "response.data " });
   } catch (error) {
     console.error(error);
     res.status(500).json({ error: "Internal server error" });
