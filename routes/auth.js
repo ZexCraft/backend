@@ -37,7 +37,7 @@ router.post("/store", async (req, res) => {
 });
 
 router.post("/hello", async (req, res) => {
-  res.status(200).json({ response: "hello" });
+  res.status(200).json({ response: "hello v1" });
 });
 
 router.post("/image", async (req, res) => {
@@ -45,7 +45,7 @@ router.post("/image", async (req, res) => {
   console.log(image);
 
   try {
-    const { data } = await axios.get(imageUrl, { responseType: "arraybuffer" });
+    const { data } = await axios.get(image);
     const imageBuffer = Buffer.from(data, "binary");
 
     const tempFilePath = path.join(__dirname, "image.jpg");
