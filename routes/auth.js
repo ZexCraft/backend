@@ -45,12 +45,13 @@ router.post("/image", async (req, res) => {
   console.log(image);
 
   try {
-    const { data } = await axios.get(image);
+    const { data } = await axios.get(image, { responseType: "arraybuffer" });
+    console.log(data);
     const imageBuffer = Buffer.from(data, "binary");
 
-    const tempFilePath = path.join(__dirname, "image.jpg");
+    const tempFilePath = "./image.jpg";
     fs.writeFileSync(tempFilePath, imageBuffer);
-    // Create FormData
+    // // Create FormData
     const formData = new FormData();
     formData.append("file", fs.createReadStream(tempFilePath), {
       filename: "image.jpg",
