@@ -32,7 +32,6 @@ router.post("/image-pinata", async (req, res) => {
     formData.append("file", fs.createReadStream(tempFilePath), {
       filename: "image.jpg",
     });
-    formData.append("file", stream);
     const pinataMetadata = JSON.stringify({
       name: "ZexCraft NFT",
     });
@@ -43,7 +42,7 @@ router.post("/image-pinata", async (req, res) => {
     });
     formData.append("pinataOptions", pinataOptions);
     try {
-      const res = await axios.post(
+      const response = await axios.post(
         "https://api.pinata.cloud/pinning/pinFileToIPFS",
         formData,
         {
@@ -54,8 +53,8 @@ router.post("/image-pinata", async (req, res) => {
           },
         }
       );
-      console.log(res.data);
-      res.status(200).json(res.data);
+      console.log(response.data);
+      res.status(200).json(response.data);
     } catch (error) {
       console.log(error);
     }
