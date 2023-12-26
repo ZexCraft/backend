@@ -29,9 +29,22 @@ router.post("/image-pinata", async (req, res) => {
   const { image } = req.body;
 
   try {
-    const formData = new FormData();
-    const { data } = await axios.get(image, { responseType: "arraybuffer" });
-    console.log(data);
+    let fetchUrl = JSON.stringify({
+      imgUrl: image,
+    });
+    let config = {
+      method: "post",
+      maxBodyLength: Infinity,
+      url: "https://api.thenextleg.io/getImage",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${process.env.MIDJOURNEY_API_KEY}`,
+      },
+      responseType: "arraybuffer",
+      data: fetchUrl,
+    };
+
+    const { data } = await axios.request(config);
     const imageBuffer = Buffer.from(data, "binary");
 
     const tempFilePath = "./image.jpg";
@@ -82,11 +95,24 @@ router.post("/image-pinata", async (req, res) => {
 });
 router.post("/image", async (req, res) => {
   const { image } = req.body;
-  console.log(image);
 
   try {
-    const { data } = await axios.get(image, { responseType: "arraybuffer" });
-    console.log(data);
+    let fetchUrl = JSON.stringify({
+      imgUrl: image,
+    });
+    let config = {
+      method: "post",
+      maxBodyLength: Infinity,
+      url: "https://api.thenextleg.io/getImage",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${process.env.MIDJOURNEY_API_KEY}`,
+      },
+      responseType: "arraybuffer",
+      data: fetchUrl,
+    };
+
+    const { data } = await axios.request(config);
     const imageBuffer = Buffer.from(data, "binary");
 
     const tempFilePath = "./image.jpg";
