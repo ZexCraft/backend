@@ -2,7 +2,7 @@ const router = require("express").Router();
 const fs = require("fs");
 const FormData = require("form-data");
 const axios = require("axios");
-// const { createClient } = require("@supabase/supabase-js");
+const { createClient } = require("@supabase/supabase-js");
 
 router.post("/store", async (req, res) => {
   const { metadataString } = req.body;
