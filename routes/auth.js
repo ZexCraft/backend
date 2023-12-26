@@ -5,12 +5,20 @@ const axios = require("axios");
 const { createClient } = require("@supabase/supabase-js");
 require("dotenv").config();
 
-const SUPABASE_URL = process.env.NEXT_PUBLIC_SUPABASE_URL;
-const SUPABASE_KEY = process.env.NEXT_PUBLIC_SUPABASE_KEY;
+const SUPABASE_URL = process.env.SUPABASE_URL;
+const SUPABASE_KEY = process.env.SUPABASE_KEY;
 
 const supabase = SUPABASE_URL
   ? createClient(SUPABASE_URL, SUPABASE_KEY || "")
   : null;
+
+const uploadImageToBucket = async (image, name) => {
+  const { data, error } = supabase
+    ? await supabase.storage.from("images").upload(`${name}.png`, image, {
+        contentType: "image/png",
+      })
+    : { data: null, error: new Error("supabase not initialized") };
+};
 
 router.get("/hello", async (req, res) => {
   console.log("hello");
@@ -53,8 +61,17 @@ router.post("/image-pinata", async (req, res) => {
           },
         }
       );
-      console.log(response.data);
-      res.status(200).json(response.data);
+      const blob = new Blob([imageBuffer], { type: "image/jpeg" });
+      uploadImageToBucket(blob, response.data.IpfsHash + ".png");
+
+      res.status(200).json({
+        image: response.data.IpfsHash,
+        imageAlt:
+          SUPABASE_URL +
+          "/storage/v1/object/public/images/" +
+          response.data.IpfsHash +
+          ".png",
+      });
     } catch (error) {
       console.log(error);
     }
@@ -91,7 +108,17 @@ router.post("/image", async (req, res) => {
       }
     );
 
-    res.status(200).json(response.data);
+    const blob = new Blob([imageBuffer], { type: "image/jpeg" });
+    uploadImageToBucket(blob, response.data.value.cid);
+
+    res.status(200).json({
+      image: response.data.value.cid,
+      imageAlt:
+        SUPABASE_URL +
+        "/storage/v1/object/public/images/" +
+        response.data.value.cid +
+        ".png",
+    });
   } catch (error) {
     console.error(error);
     res.status(500).json({ error: "Internal server error", message: error });
