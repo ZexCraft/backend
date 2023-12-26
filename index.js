@@ -1,22 +1,19 @@
 const cookieSession = require("cookie-session");
 const express = require("express");
-const passport = require("passport");
 const cors = require("cors");
+require("dotenv").config();
 const bodyParser = require("body-parser");
 const port = process.env.PORT || 5000;
-// const passportSetup = require('./passport');
 const authRoute = require("./routes/auth");
 const app = express();
 app.use(express.json());
 app.use(
   cookieSession({
     name: "session",
-    keys: ["zhixin"],
+    keys: ["zexcraft"],
     maxAge: 120 * 1000, // 2 minutes
   })
 );
-app.use(passport.initialize());
-app.use(passport.session());
 app.use(
   cors({
     origin: "http://localhost:3000",
